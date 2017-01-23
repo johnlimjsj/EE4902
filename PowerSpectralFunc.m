@@ -1,20 +1,43 @@
 rng default
 %get data
 load ('johnData');
-x = data;
-% sampling frequency
-Fs = 1000;
-N = length(x);
-xdft = fft(x);
-xdft = xdft(1:N/2+1);
-psdx = (1/(Fs*N)) * abs(xdft).^2;
-psdx(2:end-1) = 2*psdx(2:end-1);
-freq = 0:Fs/length(x):Fs/2;
+data = data;
 
-%Plotting the power spectral density function
-plot(freq,10*log10(psdx))
-grid on
-title('Periodogram Using FFT')
-xlabel('Frequency (Hz)')
-ylabel('Power/Frequency (dB/Hz)')
-clear
+Fs = 1000; % sampling frequency
+F0_o=50; %interference frequency
+
+noise_peaks=10;
+notchfilter_cell=cell(1,noise_peaks);
+
+s = [
+    struct('N', 4, 'Q',8) 
+    struct('N', 2, 'Q',10)
+    struct('N', 2, 'Q',10) 
+    struct('N', 2, 'Q',35)
+    struct('N', 2, 'Q',35) 
+    struct('N', 2, 'Q',35)
+    struct('N', 2, 'Q',35) 
+    struct('N', 2, 'Q',35)
+    struct('N', 2, 'Q',35) 
+    struct('N', 2, 'Q',35)
+    ];
+
+F0=F0_o;
+for i = 1:noise_peaks 
+   notchspec = fdesign.notch('N,F0,Q',s(i).N,F0,s(i).Q,Fs);
+   notchfilter = design(notchspec);
+   notchfilter_cell{1,i}=notchfilter;
+   F0=F0+F0_o;
+end
+notchfilter_array = [notchfilter_cell{:}];
+
+%a comb notching filter that repeats across a base frequency set
+combspecs  = fdesign.comb('notch','N,Q',20,5,Fs);
+combfilter = design(combspecs);
+
+combined_filters = dfilt.cascade(notchfilter_array,combfilter);
+
+%Choose the filter: 
+data = filter(combfilter,data); %the filtered data
+
+PlotPowerSpectralFunc(data,Fs,'using a comb filter')
