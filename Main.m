@@ -1,6 +1,6 @@
 rng default
 %get data
-load ('johnData');
+load ('Jasveen');
 data = data;
 
 Fs = 1000; % sampling frequency
@@ -39,10 +39,10 @@ combFilter = design(combspecs);
 combined_filters = dfilt.cascade(notchFilterArray,combFilter);
 notchFilter = dfilt.cascade(notchFilterArray);
 
-
+fvtool(combined_filters);
 
 %Choose the filter: 
-filteredData = filter(notchFilter,data); %the filtered data
+filteredData = filter(combined_filters,data); %the filtered data
 
 %dictionary of filters
 Filter = containers.Map;
@@ -64,4 +64,7 @@ Data('filtered') = filteredData;
 % filteredData = filter(notchFilter,data); %the filtered data
 % PlotPowerSpectralFunc(filteredData,Fs,'using a notch filter')
 % subplot(2,2,4);
-PlotSpectrogram(data, window_2, 200, Fs)
+
+
+% pxx = pwelch(filteredData, win, nOverlap);
+PlotSpectrogram(filteredData, 10, 0.1, Fs)

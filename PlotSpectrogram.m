@@ -1,4 +1,4 @@
-function [] = PlotSpectrogram(data, window, nOverlap, Fs)
+function [] = PlotSpectrogram(data, nSections, percentOverlap, Fs)
 %Plots the Spectogram in Matlab with input data given
 %   Detailed explanation goes here
 
@@ -9,11 +9,15 @@ function [] = PlotSpectrogram(data, window, nOverlap, Fs)
     titleText={'Periodogram Using FFT '};
     titleText=strcat(titleText,titleAppend);
     
-    pxx = pwelch(data, window, nOverlap);
-    spectrogram(pxx,window,200,1000,Fs);
+    len = length(data)
+    wind = floor(len/nSections)
+    overlap = floor(wind*percentOverlap)
+    nff = max(256,2^nextpow2(wind));
+    
+    spectrogram(data,hamming(wind),overlap,nff,Fs); %
+%     surf(t,f,ps)
     title('Short time fourier transform of Filter');
     zlabel('Magnitude');
     view(-45,65)
-    shading interp
     colorbar
 end
