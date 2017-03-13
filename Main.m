@@ -1,6 +1,6 @@
 rng default
 %get data
-load ('Jasveen');
+load ('johnData');
 data = data;
 
 Fs = 1000; % sampling frequency

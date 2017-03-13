@@ -15,7 +15,8 @@ function [] = PlotSpectrogram(data, nSections, percentOverlap, Fs)
     nff = max(256,2^nextpow2(wind));
     
     spectrogram(data,hamming(wind),overlap,nff,Fs); %
-%     surf(t,f,ps)
+    [S, F, T, P] = spectrogram(data,hamming(wind),overlap,nff,Fs); %
+    surf(T,F,P)
     title('Short time fourier transform of Filter');
     zlabel('Magnitude');
     view(-45,65)
