@@ -5,7 +5,7 @@ function [] = compareImages( im1, im1_title, im2, im2_title )
     subplot(1,2,1);
     imshow(im1)
     title(im1_title);
-    
+    set(subplot(1,2,2),'Color','Red')
     subplot(1,2,2);
     imshow(im2)
     title(im2_title);
