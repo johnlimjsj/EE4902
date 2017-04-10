@@ -1,6 +1,5 @@
+
 function [ imout ] = stretch( imagein )
-%UNTITLED Summary of this function goes here
-%   Detailed explanation goes here
     s=size(imagein);
     imagein=double(imagein);
     imout=zeros(s(1),s(2));
