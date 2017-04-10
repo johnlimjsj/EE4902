@@ -54,18 +54,18 @@ Data = containers.Map;
 Data('original') = data;
 Data('filtered') = filteredData;
 
-figure
-subplot(2,2,1);
-PlotPowerSpectralFunc(data,Fs,'using no filter')
-subplot(2,2,2);
-filteredData = filter(notchFilter,data); %the filtered data
-PlotPowerSpectralFunc(filteredData,Fs,'using a notch filter')
-subplot(2,2,3);
-plot(data)
-title('time domain of original signal')
-subplot(2,2,4);
-plot(filteredData)
-title('time domain of filtered signal')
+% figure
+% subplot(2,2,1);
+% PlotPowerSpectralFunc(data,Fs,'using no filter')
+% subplot(2,2,2);
+% filteredData = filter(notchFilter,data); %the filtered data
+% PlotPowerSpectralFunc(filteredData,Fs,'using a notch filter')
+% subplot(2,2,3);
+% plot(data)
+% title('time domain of original signal')
+% subplot(2,2,4);
+% plot(filteredData)
+% title('time domain of filtered signal')
 
 % pxx = pwelch(filteredData, win, nOverlap);
 PlotSpectrogram(filteredData, 40, 0.25, Fs)
